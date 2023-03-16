@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { MouseEvent, useState } from 'react'
 
 import { QuestionAnswer } from '../QuestionAnswer'
 import { Result } from '../Result'
@@ -6,12 +6,19 @@ import { ProgressBar } from '../ProgressBar'
 
 import S from './styles.module.scss'
 
-const QUESTIONS = [
+export interface Question {
+  id: number,
+  question: string,
+  answers: Array<string>,
+  correctAnswer: string
+}
+
+const QUESTIONS: Array<Question> = [
   {
     id: 1,
     question: 'Qual é o meu nome?',
     answers: ['Miguel', 'Luis', 'Matheus', 'Ana'],
-    correctAnswer: 'Matheus'
+    correctAnswer: 'Matheus',
   },
   {
     id: 2,
@@ -33,13 +40,19 @@ const QUESTIONS = [
   },
 ]
 
+/**
+ * Utilizando TS + React:
+ * 1 - Precisamos tipar as nossas props.
+ * 2 - Precisamos tipar as funções (parametros e tipo retorno).
+ * 3 - Precisamos tipar os estados dos nossos componentes.
+ * */
 export function Quiz () {
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
-  const [isTakingQuiz, setIsTakingQuiz] = useState(true)
-  const [isCurrentQuestionAnswered, setIsCurrentQuestionAnswered] = useState(false)
-  const [correctAnswersCount, setCorrectAnswersCount] = useState(0)
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0)
+  const [isTakingQuiz, setIsTakingQuiz] = useState<boolean>(true)
+  const [isCurrentQuestionAnswered, setIsCurrentQuestionAnswered] = useState<boolean>(false)
+  const [correctAnswersCount, setCorrectAnswersCount] = useState<number>(0)
 
-  const handleNextQuestion = () => {
+  const handleNextQuestion = (): void => {
     if (currentQuestionIndex < QUESTIONS.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1)
     } else {
@@ -49,7 +62,11 @@ export function Quiz () {
     setIsCurrentQuestionAnswered(false)
   }
 
-  const handleAnswerQuestion = (event, question, userAnswer) => {
+  const handleAnswerQuestion = (
+    event: MouseEvent<HTMLButtonElement>,
+    question: Question,
+    userAnswer: string
+  ): void => {
     if (isCurrentQuestionAnswered) {
       return
     }
@@ -67,7 +84,7 @@ export function Quiz () {
     setIsCurrentQuestionAnswered(true)
   }
 
-  const handleTryAgain = () => {
+  const handleTryAgain = (): void => {
     setIsTakingQuiz(true)
     setCurrentQuestionIndex(0)
     setCorrectAnswersCount(0)

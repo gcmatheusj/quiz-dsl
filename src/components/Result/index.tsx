@@ -1,6 +1,12 @@
 import S from './styles.module.scss'
 
-export function Result ({ correctAnswersCount, quizSize, handleTryAgain }) {
+interface ResultProps {
+  correctAnswersCount: number
+  quizSize: number
+  handleTryAgain: () => void
+}
+
+export function Result ({ correctAnswersCount, quizSize, handleTryAgain }: ResultProps) {
   return (
     <div className={S.container}>
       <h1>Resultado</h1>
